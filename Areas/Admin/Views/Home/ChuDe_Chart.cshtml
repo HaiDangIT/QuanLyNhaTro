@@ -1,0 +1,39 @@
+﻿@using DACS2.ViewModels;
+@model List<string>
+@using Newtonsoft.Json
+
+
+
+<canvas id="chuDeChart" width="400" height="300"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const chuDeCtx = document.getElementById('chuDeChart').getContext('2d');
+
+    new Chart(chuDeCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonConvert.SerializeObject(Model)),
+            datasets: [{
+                label: 'Chủ đề',
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Select((_, index) => index + 1))), // mock số liệu
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Danh sách Chủ đề (theo thứ tự)'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });
+</script>

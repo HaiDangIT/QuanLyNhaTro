@@ -1,0 +1,133 @@
+﻿<body>
+    <div class="container-fluid mt-4">
+        <div class="row" style="height: 100vh;padding: 20px">
+            <!-- Cột trái-->
+            <div class="col-md-8">
+                <div class="video-wrapper mb-3">
+                    @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                    {
+                        <iframe src="@Model.VideoUrl" title="Video bài học" allowfullscreen></iframe>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Chưa có video cho bài học này.</div>
+                    }
+                </div>
+
+                <h2 class="text-primary mb-3">@Model.TenBaiHoc</h2>
+
+                <div class="mb-3">
+                    <p>@Html.Raw(Model.NoiDung)</p>
+                </div>
+            </div>
+
+            <!-- Cột phải -->
+            <div class="col-md-4 sidebar">
+                <h5 class="text-secondary">Danh sách bài học</h5>
+                <ul class="list-group">
+                    @foreach (var item in ViewBag.BaiHocList as List<DACS2.Models.BaiHoc>)
+                    {
+                        var isActive = item.BaiHocId == Model.BaiHocId;
+                        <li class="list-group-item @(isActive ? "active" : "")">
+                            <a href="@Url.Action("Display", "BaiHoc", new { area = "NguoiDung", id = item.BaiHocId })">
+                                @item.TenBaiHoc
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<style>
+    :root {
+    --primary-color: #14103B; /* Màu chủ đạo: xanh dương */
+    --secondary-color: #6c757d; /* Màu phụ: xám */
+    --background-color: #ffffff; /* Màu nền */
+    --text-color: #ffffff; /* Màu chữ chính */
+    --hover-color: #0056b3; /* Màu hover nút */
+    --border-color: #dee2e6; /* Màu viền */
+    --btn-color--1: #FF7A3C;
+}
+
+    body::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+
+/* Cấu hình cho phần video */
+.video-wrapper iframe {
+    width: 100%;
+    height: 650px;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Sidebar Container */
+.sidebar {
+    height: 650px;
+    max-height: 650px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    position: relative;
+    padding: 0;
+}
+.sidebar .text-secondary
+{
+    padding: 20px;
+}
+
+/* List Group Item */
+.sidebar .list-group-item {
+
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    color: #000;
+    padding: 15px 20px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Link */
+.sidebar .list-group-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    font-style: normal;
+}
+
+/* Hover */
+.sidebar .list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Active - bài đang xem */
+.sidebar .list-group-item.active {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+
+@@media (max-width: 768px) {
+    .col-md-7, .col-md-8 {
+        width: 100%;
+    }
+
+    .col-md-4, .col-md-5 {
+        width: 100%;
+        padding-left: 0;
+        border-left: none;
+    }
+}
+
+</style>

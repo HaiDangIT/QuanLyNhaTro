@@ -1,0 +1,97 @@
+﻿@model DACS2.Models.KhoaHoc
+
+@{
+    ViewData["Title"] = "Thanh toán khóa học";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<div class="container py-5" style="height: 100vh">
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <div class="card shadow-lg border-0 rounded-4 animate-fade-in">
+                <div class="row g-0">
+                    <!-- Bên trái: Thông tin khóa học -->
+                    <div class="col-md-7 bg-white p-5 rounded-start">
+                        <h4 class="fw-bold mb-3 text-primary">
+                            <i class="bi bi-bookmark-check me-2"></i> Thông tin khóa học
+                        </h4>
+                        <h5 class="fw-semibold">@Model.TenKhoaHoc</h5>  
+                        <p class="text-muted mb-4">Mã khóa học: @Model.KhoaHocId</p>
+
+                        <div class="mb-4 text-secondary" style="min-height: 150px;">
+                            @Html.Raw(Model.MoTa)
+                        </div>
+
+                        <div class="border-top pt-3">
+                            <h6 class="text-muted">Học phí:</h6>
+                            <h3 class="text-success fw-bold">@Model.Gia.ToString("N0") VNĐ</h3>
+                        </div>
+                    </div>
+
+                    <!-- Bên phải: Phương thức thanh toán -->
+                    <div class="col-md-5 bg-light p-5 rounded-end border-start">
+                        <h4 class="fw-bold mb-4 text-dark">
+                            <i class="bi bi-credit-card me-2 text-success"></i> Phương thức thanh toán
+                        </h4>
+
+                        <!-- Momo -->
+                        <form asp-controller="ThanhToanMomo" asp-area="NguoiDung" asp-action="CreatePaymentUrl" method="post" class="mb-3">
+                            <input type="hidden" name="NguoiDungId" value="@ViewBag.NguoiDungId" />
+                            <input type="hidden" name="KhoaHocId" value="@Model.KhoaHocId" />
+                            <input type="hidden" name="Amount" value="@Model.Gia" />
+                            <input type="hidden" name="OrderId" value="@Guid.NewGuid()" />
+                            <input type="hidden" name="OrderInfo" value="Thanh toán Momo cho khóa học tại Chill" />
+                            <input type="hidden" name="FullName" value="@Model.TenKhoaHoc" />
+                            <button type="submit" class="btn btn-danger w-100 rounded-pill py-3 shadow-sm fw-semibold">
+                                <i class="bi bi-wallet2 me-2"></i> Thanh toán bằng Ví MoMo
+                            </button>
+                        </form>
+
+                        <!-- VnPay -->
+                        <form asp-controller="ThanhToanVnPay" asp-area="NguoiDung" asp-action="CreatePaymentUrl" method="post">
+                            <input type="hidden" name="NguoiDungId" value="@ViewBag.NguoiDungId"/>
+                            <input type="hidden" name="KhoaHocId" value="@Model.KhoaHocId" />
+                            <input type="hidden" name="OrderType" value="KhoaHoc" />
+                            <input type="hidden" name="Name" value="@Model.TenKhoaHoc" />
+                            <input type="hidden" name="Amount" value="@Model.Gia" />
+                            <input type="hidden" name="OrderDescription" value="Thanh toán VnPay cho khóa học @Model.TenKhoaHoc tại Chill" />
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 shadow-sm fw-semibold mt-3">
+                                <i class="bi bi-bank me-2"></i> Thanh toán bằng VNPAY
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-5">
+                            <a href="javascript:history.back()" class="text-decoration-none text-secondary">
+                                <i class="bi bi-arrow-left-circle me-1"></i> Quay lại
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .animate-fade-in {
+        animation: fadeInUp 0.5s ease;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+</style>

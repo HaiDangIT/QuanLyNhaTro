@@ -1,0 +1,94 @@
+﻿@model DACS2.Models.BaiHoc
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Cập nhật bài học";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/style_Admin_2.css" asp-append-version="true">
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+<form class="form-1" asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="BaiHocId" />
+
+    <h2>Cập nhật bài học</h2>
+    <div class="form-group">
+        <label asp-for="TenBaiHoc"></label>
+        <input asp-for="TenBaiHoc" class="form-control" />
+        <span asp-validation-for="TenBaiHoc" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NoiDung" class="form-label">Nội Dung</label>
+        <textarea asp-for="NoiDung" class="form-control" id="editorMoTa" rows="3" required></textarea>
+        <span asp-validation-for="NoiDung" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="KhoaHocId">Khóa Học</label>
+        <select asp-for="KhoaHocId" asp-items="@ViewBag.KhoaHoc"
+                class="form-control"></select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="VideoUrl" class="form-label">Nhập Link Video từ Google Drive</label>
+        <input asp-for="VideoUrl" type="text" name="videoUrl" class="form-control" placeholder="Dán link Google Drive vào đây" required />
+        <small class="text-muted">Hãy nhập đường dẫn công khai của video từ Google Drive.</small>
+    </div>
+
+    <div class="form-group">
+        <label>Hình ảnh</label>
+        <input type="file" id="imageInput1" name="hinhanh" class="form-control" />
+    </div>
+
+    <div class="row" style="max-height: 150px">
+        <div class="col-6 hinhanh text-start">
+            <h5>Current Image</h5>
+            <img src="@Model.HinhAnh" alt="Product Image" style="max-width:200px; display:none;margin-bottom: 10px;" id="imageInput1_preview" />
+        </div>
+    </div>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Lưu thay đổi" class="btn btn-success" />
+    </div>
+</form>
+
+
+<script>
+    CKEDITOR.replace('editorMoTa');
+</script>
+
+<script>
+    document.getElementById('videoInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const video = document.getElementById("previewVideo");
+            const objectURL = URL.createObjectURL(file);
+            video.src = objectURL;
+            video.load();
+        }
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function previewImage(inputId, previewId) {
+            document.getElementById(inputId).addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById(previewId).src = e.target.result;
+                        document.getElementById(previewId).style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        previewImage("imageInput1", "imageInput1_preview");
+    });
+</script>
+
+<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>

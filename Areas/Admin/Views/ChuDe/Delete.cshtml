@@ -1,0 +1,25 @@
+﻿@model DACS2.Models.ChuDe
+
+@{
+    ViewData["Title"] = "Xóa chủ đề";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-danger text-white text-center">
+            <h4>Xác nhận xóa chủ đề</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-danger fw-bold">Bạn có chắc chắn muốn xóa chủ đề sau không?</p>
+            <p><strong>Tên chủ đề:</strong> @Model.TenChuDe</p>
+            <p><strong>Mô tả:</strong> @Html.Raw(Model.MoTa)</p>
+
+            <form asp-area="Admin" asp-controller="ChuDe" asp-action="DeleteConfirmed" method="post" class="d-flex justify-content-between mt-4">
+                <input type="hidden" name="id" value="@Model.ChuDeId" />
+                <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+                <a asp-area="Admin" asp-controller="ChuDe" asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>

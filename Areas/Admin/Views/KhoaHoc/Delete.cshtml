@@ -1,0 +1,48 @@
+﻿@model DACS2.Models.KhoaHoc
+
+@{
+    ViewData["Title"] = "Xóa khóa học";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
+<link rel="stylesheet" href="~/font/fontawesome-free-6.5.1-web/fontawesome-free-6.5.1-web/css/all.css" asp-append-version="true">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <h4 class="mb-0">Xác nhận xóa khóa học</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-danger fw-bold">Bạn có chắc chắn muốn xóa khóa học sau?</p>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item">
+                            <strong>Tên khóa học:</strong> @Model.TenKhoaHoc
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Mô tả:</strong> @Html.Raw(Model.MoTa)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Giá:</strong> @Model.Gia VNĐ
+                        </li>
+                    </ul>
+
+                    <form asp-area="Admin" asp-controller="KhoaHoc" asp-action="DeleteConfirmed" method="post">
+                        <input type="hidden" name="id" value="@Model.KhoaHocId" />
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Xóa
+                            </button>
+                            <a asp-area="Admin" asp-controller="KhoaHoc" asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,137 @@
+﻿@model IEnumerable<DACS2.Models.NguoiDung>
+
+@{
+    ViewData["Title"] = "Danh sách người dùng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
+<link rel="stylesheet" href="~/font/fontawesome-free-6.5.1-web/fontawesome-free-6.5.1-web/css/all.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-12">
+
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table id="nguoiDungTable" class="display nowrap table table-bordered" style="width:100%">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Họ tên</th>
+                                <th>Giới tính</th>
+                                <th>Email</th>
+                                <th>SDT</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var nguoiDung in Model)
+                            {
+                                var khoaHocNguoiDung = ((List<DACS2.Models.CT_NguoiDung_KhoaHoc>)ViewBag.KhoaHocList)
+                                .Where(kh => kh.NguoiDungId == nguoiDung.NguoiDungId)
+                                .Select(kh => kh.KhoaHoc?.TenKhoaHoc)
+                                .ToList();
+                                <tr>
+                                    @* <td><img src="@khoaHoc.HinhAnh" class="img-thumbnail" style="padding: 0" width="80" height="80" /> *@
+                                    <td>@nguoiDung.HoTen</td>
+                                    @if (nguoiDung.GioiTinh == 0)
+                                    {
+                                        <td>Nam</td>
+                                    }
+                                    else if (nguoiDung.GioiTinh == 1)
+                                    {
+                                        <td>Nữ</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Khác</td>
+                                    }
+                                    <td>@nguoiDung.Email</td>
+                                    <td>@nguoiDung.SDT</td>
+                                    @* <td>@string.Join(", ", khoaHocNguoiDung)</td> *@
+                                    <td>
+                                        <a asp-action="Display" asp-route-id="@nguoiDung.NguoiDungId" class="btn btn-info btn-sm text-white">
+                                            <i class="fas fa-eye"></i> Xem
+                                        </a>
+                                       
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted text-center">Không có khóa học nào.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        const table = $('#nguoiDungTable').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+            },
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50, 100],
+            initComplete: function () {
+                // Di chuyển thanh tìm kiếm ra ngoài nếu muốn
+                $('#nguoiDungTable_filter').appendTo('#nguoiDungTable_filter_custom');
+                $('#nguoiDungTable_filter label').addClass('mb-0');
+            }
+        });
+    });
+</script>
+
+<style>
+    #nguoiDungTable_filter_custom {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #nguoiDungTable_filter input {
+        margin-left: 10px;
+        border-radius: 4px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+    }
+
+    .dataTables_length {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+        .dataTables_length label {
+            padding-top: 5px; /* Tăng chiều cao lên thêm 5px */
+        }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+
+    .noi-dung-khoa-hoc p {
+        padding: 0;
+        margin: 0;
+    }
+
+</style>

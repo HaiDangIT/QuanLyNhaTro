@@ -1,0 +1,648 @@
+﻿@model DACS2.ViewModels.BaiHocViewModel2
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    var currentTestCase = Model.TestCases.FirstOrDefault(tc => tc.BaiHocId == Model.BaiHocHienTai.BaiHocId);
+    var cssSelector = currentTestCase?.CssSelector ?? "default-class";
+    var selectedLanguage = Model.KhocHocHienTai.DuoiNgonNgu;
+    var nameLanguage = Model.KhocHocHienTai.NgonNgu;
+    var coCSS = Model.KhocHocHienTai.CoCss;
+}
+<link rel="stylesheet" href="~/fonts/fontawesome-free-6.5.1-web/css/all.css" asp-append-version="true">
+
+<!-- Layout 2 cột -->
+<div style="display: flex; height: 900px;">
+
+    @if (Model.BaiHocHienTai.LoaiBaiHoc)
+    {
+        <input type="hidden" id="baiHocId" value="@Model.BaiHocHienTai.BaiHocId" />
+        <input type="hidden" id="khoaHocId" value="@Model.BaiHocHienTai.KhoaHocId" />
+
+
+        @Html.AntiForgeryToken()
+
+        <!-- Cột trái: Tabs Nội dung + Trình duyệt -->
+        <!-- Cột trái -->
+        <div style="flex: 1; display: flex; flex-direction: column; border-right: 1px solid #ddd;">
+            <!-- Tabs -->
+            <div style="display: flex; background: #f1f1f1f1; border-bottom: 1px solid #ddd;">
+                <button id="tab-content" onclick="showContent('content')" class="tab active">📄 NỘI DUNG</button>
+                <button id="tab-preview" onclick="showContent('preview')" class="tab">🖥️ TRÌNH DUYỆT</button>
+            </div>
+
+            <!-- Nội dung Đề bài và Trình duyệt -->
+            <div style="flex: 1; overflow-y: auto; position: relative;">
+                <div id="content-view" style="padding: 20px;">
+                    <h1>@Model.BaiHocHienTai.TenBaiHoc #@Html.Raw(Model.BaiHocHienTai.ThuTu)</h1>
+                    <div class="de-bai">
+                        <h4>Đề bài:</h4>
+                        <p style="font-size: 20px; text-align: justify">Bên tab TRÌNH DUYỆT đang hiển thị các đoạn văn, các đoạn văn này nằm trong một thẻ div, vì không có khoảng đệm nên bị dính sát vào viền thẻ div, trông mất thẩm mỹ và khó đọc.</p>
+                        <div class="d-flex" style="font-size: 20px">👉 @Html.Raw(Model.BaiHocHienTai.NoiDung)</div>
+                    </div>
+                </div>
+
+                <div id="preview-view" style="display: none; height: 100%; width: 100%;">
+                    <iframe id="preview-frame" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+        <!-- Cột phải: Editor + Chấm bài -->
+        <!-- Cột phải -->
+        <div style="flex: 1; display: flex; flex-direction: column;">
+            <!-- Tabs Editor -->
+            <div style="display: flex; background-color: #f1f1f1f1; border-bottom: 1px solid #ddd;">
+                <button style="@(selectedLanguage != "html" ? "display:none;" : ""); background-color: #1E1E1E; color: white" id="tab-html" onclick="showEditor('html')" class="tab active">index.html</button>
+                <button style="@(selectedLanguage != "html" ? "display:none;" : ""); background-color: #1E1E1E; color: white" id="tab-css" onclick="showEditor('css')" class="tab">style.css</button>
+                <button style="@(selectedLanguage != "javascript" ? "display:none;" : ""); background-color: #1E1E1E; color: white" id="tab-js" onclick="showEditor('js')" class="tab">main.js</button>
+                <button onclick="updatePreview()" class="btn-preview">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+
+            <!-- Editors -->
+            <div id="editors" style="flex: 1; position: relative; max-height: 680px">
+                <div id="html-editor" style="width: 100%; height: 100%;"></div>
+                <div id="css-editor" style="height: 100%; "></div>
+                <div id="js-editor" style="height: 100%;"></div>
+            </div>
+
+            <div id="requirementList" style="height: 300px; max-height: 100% ;margin: 20px 0;">
+                <h4>📌 Yêu cầu cần đạt:</h4>
+                <ul id="requirementItems" style="list-style-type: none; padding-left: 0;"></ul>
+            </div>
+
+            <!-- Kết quả kiểm tra + nút nộp bài -->
+            <div style="padding: 10px;">
+                <div id="testResults"></div>
+                <button class="btn-link" onclick="runTests()">KIỂM TRA</button>             
+                <button class="btn-link" onclick="resetEditors()" style=" background: #ff4444;">RESET</button>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <input type="hidden" id="baiHocId" value="@Model.BaiHocHienTai.BaiHocId" />
+        <input type="hidden" id="khoaHocId" value="@Model.BaiHocHienTai.KhoaHocId" />
+
+        <div style="flex: 1; padding: 20px;">
+
+            @if (!string.IsNullOrEmpty(Model.BaiHocHienTai.VideoUrl))
+            {
+                <div style=" height: 720px; margin-top: 16px;">
+                    <iframe src="@Model.BaiHocHienTai.VideoUrl" allowfullscreen allow="autoplay"
+                    style="width: 100%; height: 100%; border: none;">
+                    </iframe>
+                </div>
+
+            }
+            else
+            {
+                <p class="text-danger">Không có video cho bài học này.</p>
+            }
+
+            <div style="margin-left: 12px; min-height: 200px" class="mt-4">
+                <h3>@Model.BaiHocHienTai.TenBaiHoc</h3>
+                <p style="font-size: 20px">@Html.Raw(Model.BaiHocHienTai.NoiDung)</p>
+            </div>
+
+        </div>
+    }
+
+    <div style="width: 440px; background: #f8f8f8; border-right: 1px solid #ddd; overflow-y: auto; padding: 20px">
+        <div style="padding: 10px;">
+
+            <div style="display: inline-block; padding: 8px 12px; box-shadow: 1px 1px 1px 1px rgba(0,0,0, .5); border-radius: 20px" class="">
+                <strong id="tienDoHoc">0%</strong> |
+                <span id="soBaiHoanThanh">0</span>/<span id="tongSoBai">0</span> bài học
+            </div>
+
+            <h3 style="font-size: 26px; font-weight:600 ;margin-top: 20px">Danh sách bài học</h3>
+            <ul style="list-style-type: decimal; padding-left: 0;">
+                @foreach (var baiHoc in ViewBag.DanhSachBaiHoc)
+                {
+                    var isDone = ((List<int>)ViewBag.BaiHocDaHoanThanh).Contains(baiHoc.BaiHocId);
+                    <li style="margin: 8px 0; padding: 8px; border-bottom: 1px solid rgba(0, 0, 0, .5)">
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="BaiHoc"
+                               asp-action="Index"
+                               asp-route-khoaHocId="@baiHoc.KhoaHocId"
+                               asp-route-baiHocId="@baiHoc.BaiHocId"
+                               class="btn-link_baiHoc"
+                               style="color: @(baiHoc.BaiHocId == Model.BaiHocHienTai.BaiHocId ? "#000000" : "#333");
+                            font-weight: @(baiHoc.BaiHocId == Model.BaiHocHienTai.BaiHocId ? "bold" : "normal");">
+                                @baiHoc.TenBaiHoc
+                            </a>
+
+                            @if (isDone)
+                            {
+                                <span style=" margin-left: 30px;"><i style="color: green" class="fa-solid fa-circle-check"></i></span>
+                            }
+                            else
+                            {
+                                <span style=" margin-left: 30px;"><i class="fa-solid fa-circle-check"></i></span>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="border-top: 1px solid rgba(0,0,0, .4); margin-top: 20px"></div>
+<div style="width: 600px;  " class="container d-flex justify-content-between align-items-center bg-light p-2 rounded my-3">
+    <div>
+        <a asp-action="Index"
+        asp-route-khoaHocId="@Model.BaiHocHienTai.KhoaHocId"
+        asp-route-baiHocId="@Model.BaiTruoc?.BaiHocId"
+        class="btn rounded-pill px-4 @(Model.BaiTruoc == null ? "btn-outline-secondary disabled" : "btn-outline-primary")"
+        tabindex="@(Model.BaiTruoc == null ? "-1" : "0")"
+        aria-disabled="@(Model.BaiTruoc == null ? "true" : "false")">
+            <i class="fas fa-chevron-left"></i> BÀI TRƯỚC
+        </a>
+    </div>
+    <div>
+        <a asp-action="Index"
+        asp-route-khoaHocId="@Model.BaiHocHienTai.KhoaHocId"
+        asp-route-baiHocId="@Model.BaiTiepTheo?.BaiHocId"
+        class="btn rounded-pill px-4 @(Model.BaiTiepTheo == null ? "btn-secondary disabled" : "btn-primary")"
+        tabindex="@(Model.BaiTiepTheo == null ? "-1" : "0")"
+        aria-disabled="@(Model.BaiTiepTheo == null ? "true" : "false")">
+            BÀI TIẾP THEO <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+</div>
+
+
+<!-- Style thêm -->
+<style>
+    .de-bai {
+        background-color: #f5f5f5;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 8px;
+    }
+
+    .tab {
+        padding: 10px 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .tab.active {
+        background-color: #ddd;
+    }
+
+    .btn-preview {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1E1E1E;
+        width: 100px;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    .btn-preview:hover {
+        background-color: #218838;
+        transform: scale(1.01);
+    }
+
+    .btn-link_baiHoc {
+        font-size: 18px;
+        text-decoration: none;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+        color: #333;
+        font-weight: normal;
+    }
+
+    .btn-link_baiHoc:hover {
+        text-decoration: none;
+        color: #000000;
+        font-weight: bold;
+        transform: scale(1.05);
+    }
+
+    .btn-link{
+        color: white;
+        margin-top: 10px;
+        background: #00aaff;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 24px;
+        transition: all 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+    .btn-link:hover{
+        text-decoration: none;
+        color: #000;
+        opacity: .5;
+        transform:scale(1.1);
+    }
+
+</style>
+
+<!-- Monaco Editor -->
+<script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var test = {
+    CssSelector: '@cssSelector'
+    };
+    var selectedLanguage = '@Model.KhocHocHienTai.DuoiNgonNgu';
+    let showCssOnly = false;
+    const defaultElement = test.CssSelector.replace(/^\./, '');
+    let htmlEditor, cssEditor, jsEditor;
+        const defaultHTML = `
+        <div class="${defaultElement}">
+            <p>Hello các bạn, tiếng anh là kĩ năng rất quan trọng...</p>
+            <p>Duolingo là một ứng dụng giúp học từ vựng...</p>
+        </div>`;
+
+        const defaultCSS = `
+        .${defaultElement} {
+            background-color: #ebebeb;
+        }`;
+
+        const defaultJs = `<---- Hãy viết code xử lý ở đây ---->`
+
+        const cleanedHTML = formatHTML(defaultHTML);
+        const cleanedCSS = formatHTML(defaultCSS);
+        const cleanedJS = formatHTML(defaultJs);
+        let daHoanThanh = false;
+
+        const baiHocInput = document.getElementById('baiHocId');
+        if (!baiHocInput) {
+            console.error("Không tìm thấy input #baiHocId trong DOM.");
+            return;
+        }
+        const baiHocId = parseInt(baiHocInput.value);
+
+        const isLyThuyet = @Html.Raw((ViewBag.IsLyThuyet ?? true).ToString().ToLower());
+        const testCases = @Html.Raw(ViewBag.TestCases);
+        console.log("testCases:", testCases);
+        console.log("isLyThuyet:", isLyThuyet);
+
+        if (!isLyThuyet && !daHoanThanh) {
+            danhDauHoanThanh();
+            daHoanThanh = true;
+        }
+
+        function danhDauHoanThanh() {
+            fetch('/NguoiDung/BaiHoc/DanhDauHoanThanh', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ baiHocId: baiHocId })
+            }).then(res => {
+                if (res.ok) {
+                    console.log("Đã đánh dấu hoàn thành bài học.");
+                    const icon = document.getElementById('hoanthanh-icon');
+                    if (icon) icon.style.display = 'inline-block';
+                }
+            });
+        }
+
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            htmlEditor = monaco.editor.create(document.getElementById('html-editor'), {
+                value: cleanedHTML,
+                language: 'html',
+                theme: 'vs-dark',
+                fontSize: 18,
+                automaticLayout: true
+            });
+
+            cssEditor = monaco.editor.create(document.getElementById('css-editor'), {
+                value: cleanedCSS,
+                language: 'css',
+                theme: 'vs-dark',
+                fontSize: 18,
+                automaticLayout: true
+            });
+
+            jsEditor = monaco.editor.create(document.getElementById('js-editor'), {
+                value: cleanedJS,
+                language: 'javascript',
+                theme: 'vs-dark',
+                fontSize: 18,
+                automaticLayout: true
+            });
+
+            // Ẩn hiện theo selectedLanguage hoặc showCssOnly
+            document.getElementById('html-editor').style.display = (selectedLanguage === 'html' && showCssOnly === false) ? 'block' : 'none';
+            document.getElementById('css-editor').style.display = (selectedLanguage === 'html' && showCssOnly === true) ? 'block' : 'none';
+            document.getElementById('js-editor').style.display = selectedLanguage === 'javascript' ? 'block' : 'none';
+        });
+
+
+
+        const requirementList = document.getElementById('requirementItems');
+        if (!testCases || testCases.length === 0) {
+            document.getElementById('requirementList').style.display = 'none';
+        } else {
+            testCases.forEach((test, index) => {
+                const li = document.createElement('li');
+                li.id = `req-${index}`;
+                li.innerHTML = `
+                    <label style="font-size: 20px; font-weight: 500">
+                        <input style="margin-left:40px;" type="checkbox" id="check-${index}" disabled />
+                        ${test.Description}
+                    </label>`;
+                requirementList.appendChild(li);
+            });
+        }
+
+        window.showEditorCss = function () {
+            document.getElementById('html-editor').style.display = 'none';
+            document.getElementById('css-editor').style.display = 'block';
+            document.getElementById('tab-css').classList.add('active');
+            document.getElementById('tab-html').classList.remove('active');
+        }
+
+
+        window.showEditor = function (editorType) {
+            if (editorType === 'html') {
+                console.log(showCssOnly);
+                document.getElementById('html-editor').style.display = 'block';
+                document.getElementById('css-editor').style.display = 'none';
+                document.getElementById('tab-html').classList.add('active');
+                document.getElementById('tab-css').classList.remove('active');
+            } else {
+                showCssOnly = true;
+                console.log(showCssOnly);
+                document.getElementById('html-editor').style.display = 'none';
+                document.getElementById('css-editor').style.display = 'block';
+                document.getElementById('tab-css').classList.add('active');
+                document.getElementById('tab-html').classList.remove('active');
+            }
+        }
+
+        window.showContent = function (viewType) {
+            if (viewType === 'content') {
+                document.getElementById('content-view').style.display = 'block';
+                document.getElementById('preview-view').style.display = 'none';
+                document.getElementById('tab-content').classList.add('active');
+                document.getElementById('tab-preview').classList.remove('active');
+            } else {
+                document.getElementById('content-view').style.display = 'none';
+                document.getElementById('preview-view').style.display = 'block';
+                document.getElementById('tab-preview').classList.add('active');
+                document.getElementById('tab-content').classList.remove('active');
+                updatePreview();
+            }
+        }
+
+        function updatePreview() {
+            const htmlContent = htmlEditor.getValue().trim();
+            let cssContent = cssEditor.getValue().trim();
+
+            cssContent = `body { font-size: 20px; line-height: 1.6; }\n` + cssContent;
+
+            const previewFrame = document.getElementById('preview-frame');
+            const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+
+            previewDoc.open();
+            previewDoc.write(`<style>${cssContent}</style>\n${htmlContent}`);
+            previewDoc.close();
+        }
+
+
+        window.runTests = async function () 
+        {
+            const lang = "@(selectedLanguage)";
+           
+            let jsContent = "";
+            let htmlContent = "";
+            let cssContent = "";
+
+            if (lang === "javascript") {
+                if (!jsEditor) {
+                    alert("Lỗi: jsEditor chưa được khởi tạo!");
+                    return;
+                }
+
+                    jsContent = jsEditor.getValue().trim();
+
+                if (!jsContent) {
+                    alert("Bạn chưa viết mã Javascript. Vui lòng nhập code trước khi nộp bài!");
+                    return;
+                }
+            }else{
+                if (!htmlEditor || !cssEditor) {
+                    alert("Editor HTML hoặc CSS chưa được khởi tạo!");
+                    return;
+                }
+
+                console.log('htmlEditor:', htmlEditor);
+                console.log('cssEditor:', cssEditor);
+
+                htmlContent = htmlEditor.getValue().trim();
+                cssContent = cssEditor.getValue().trim();
+
+                if (!htmlContent && !cssContent) {
+                    alert("Bạn chưa viết mã HTML hoặc CSS nào. Vui lòng nhập code trước khi nộp bài!");
+                    return;
+                }
+            }
+            
+
+            if (!testCases || !Array.isArray(testCases)) {
+                alert("Không có bộ test case nào để kiểm tra bài này.");
+                return;
+            }
+
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+
+            if (lang === "html") 
+            {
+                if (!htmlContent && !cssContent) 
+                {
+                    alert("Bạn chưa viết mã HTML hoặc CSS nào. Vui lòng nhập code trước khi nộp bài!");
+                    return;
+                }
+                    iframeDoc.write(`<style>${cssContent}</style>${htmlContent}`);
+            } else {
+                if (!jsContent) {
+                    alert("Bạn chưa viết mã JavaScript nào.");
+                    return;
+                }
+
+                iframeDoc.write(`<script>${jsContent}<\/script>`);
+            }            
+
+            iframeDoc.close();
+
+            let passedCount = 0;
+            let results = [];
+
+            for (const [index, test] of testCases.entries()) {
+
+                const reqItem = document.getElementById(`req-${index}`);
+                let passed = false;
+
+                console.log(test);
+
+                if (lang === "javascript" && test.UseJudge0 === true) {
+                    try {
+                        const fullCode = `
+                            ${jsContent}
+                            function captureLog(...args) {
+                                return args.join(" ");
+                            }
+                        console.log = captureLog;
+                        captureLog(${test.CallCode});
+                        `.trim();
+
+                        console.log(fullCode);
+
+                        const judge0Res = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-RapidAPI-Key": "4d4df3704bmsh7536c14b9f12e89p18eae4jsn0987da5ea24e",
+                                "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com"
+                            },
+                            body: JSON.stringify({
+                                source_code: fullCode,
+                                language_id: 63,
+                                expected_output: (test.ExpectedValue.trim() + "\n")
+                            })
+                        });
+
+                        const judge0Result = await judge0Res.json();
+                        const judgeOutput = (judge0Result.stdout || "").trim();
+                        const expected = test.ExpectedValue.trim();
+
+                        console.log(judge0Result);
+                        console.log(judgeOutput);
+                        console.log(expected);
+
+
+                        const passed = judgeOutput === expected;
+
+                        results.push({
+                            description: test.Description,
+                            passed,
+                            reason: passed ? "" : `Kết quả là "${judgeOutput}", mong đợi là "${expected}"`
+                        });
+
+                        if (reqItem) {
+                            reqItem.querySelector("label").innerHTML = `
+                                <input style="margin-left:40px;" type="checkbox" id="check-${index}" ${passed ? "checked" : ""} disabled />
+                                ${passed ? ` ${test.Description}` : `❌ ${test.Description} - Kết quả là "${judgeOutput}", mong đợi là "${expected}"`}
+                            `;
+                        }
+
+                        if (passed) passedCount++;
+                        continue;
+                    } catch (e) {
+                        results.push({ description: test.Description, passed: false, reason: "Lỗi gọi Judge0" });
+                        if (reqItem) reqItem.innerHTML = `❌ ${test.Description} - Lỗi gọi Judge0`;
+                        continue;
+                    }
+                }
+
+
+                // ❗ Không dùng querySelector nếu là Judge0 test (đã xử lý ở trên)
+                const element = iframeDoc.querySelector(test.CssSelector);
+
+                if (!element) {
+                    results.push({ description: test.Description, passed: false, reason: "Không tìm thấy phần tử" });
+                    if (reqItem) reqItem.innerHTML = `❌ ${test.Description} - Không tìm thấy phần tử`;
+                    continue;
+                }
+
+                if (lang === "html") {
+                    if (test.TestType === "style") {
+                        const computedStyle = iframe.contentWindow.getComputedStyle(element);
+                        const actualValue = computedStyle.getPropertyValue(test.Property);
+                        passed = (test.ExpectedValue.includes("16px") && actualValue.includes("16px")) || actualValue === test.ExpectedValue;
+                    } else if (test.TestType === "innerText") {
+                        passed = element.innerText.includes(test.ExpectedValue);
+                    } else if (test.TestType === "attribute") {
+                        const attrValue = element.getAttribute(test.Property);
+                        passed = attrValue === test.ExpectedValue;
+                    }
+                }
+
+                    
+                if (passed) {
+                    results.push({ description: test.Description, passed: true });
+                    if (reqItem) {
+                        reqItem.querySelector('label').innerHTML =
+                            `<input style="margin-left:40px;" type="checkbox" id="check-${index}" checked disabled /> ${test.Description}`;
+                    }
+                    passedCount++;
+                } else if (lang !== "javascript" || test.TestType !== "js-event") {
+                    results.push({ description: test.Description, passed: false, reason: "Giá trị không khớp" });
+                    if (reqItem) reqItem.innerHTML = `❌ ${test.Description} - Giá trị không khớp`;
+                }
+            }
+
+
+            document.body.removeChild(iframe);
+
+            document.getElementById('testResults').innerHTML =
+                `🎯 <strong>Tổng kết:</strong> ${passedCount} / ${testCases.length} yêu cầu đạt.`;
+
+            if (passedCount === testCases.length && !daHoanThanh) {
+                danhDauHoanThanh();
+                daHoanThanh = true;
+            }
+        }
+
+        window.resetEditors = function () {
+            htmlEditor.setValue(defaultHTML);
+            cssEditor.setValue(defaultCSS);
+            jsEditor.setValue(defaultJs);
+            document.getElementById('testResults').innerHTML = '';
+            updatePreview();
+        }
+
+        async function capNhatTienDo(khoaHocId) {
+
+            const res = await fetch(`/DanhDauHoanThanh/TinhTienDo?khoaHocId=${khoaHocId}`);
+            const data = await res.json();
+
+
+            document.getElementById("tienDoHoc").innerText = data.phanTram + "%";
+            document.getElementById("soBaiHoanThanh").innerText = data.baiDaHoanThanh;
+            document.getElementById("tongSoBai").innerText = data.tongBaiHoc;
+        }
+
+        const khoaHocId = document.getElementById("khoaHocId").value;
+        capNhatTienDo(khoaHocId);
+
+        function formatHTML(html) {
+            return html
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .join('\n');
+        }
+
+    });
+</script>
+
+
+

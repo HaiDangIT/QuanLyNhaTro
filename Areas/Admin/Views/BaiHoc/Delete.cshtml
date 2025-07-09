@@ -1,0 +1,31 @@
+﻿@model DACS2.Models.BaiHoc
+
+@{
+    ViewData["Title"] = "Xóa bài học";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-danger text-white text-center">
+            <h4>Xác nhận xóa bài học</h4>
+        </div>
+        <div class="card-body text-center">
+            <p class="mb-4">Bạn có chắc chắn muốn xóa bài học: <strong>@Model.TenBaiHoc</strong>?</p>
+
+            <form asp-area="Admin" asp-controller="KhoaHoc" asp-action="DeleteConfirmed" method="post">
+                <input type="hidden" name="id" value="@Model.KhoaHocId" />
+                <button type="submit" class="btn btn-danger me-2">Xác nhận xóa</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Tuỳ chọn: Nếu bạn có file style_Admin_2.css */
+    .card {
+        border-radius: 15px;
+    }
+
+</style>

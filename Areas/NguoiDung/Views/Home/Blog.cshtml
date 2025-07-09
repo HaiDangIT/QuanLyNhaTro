@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Danh sách Blog</title>
+    <style>
+        /* Reset box-sizing cho toàn bộ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin: 40px 0;
+            color: #1a237e;
+            letter-spacing: 1.2px;
+            text-align: center;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 3px rgba(26, 35, 126, 0.3);
+        }
+
+        ul.blog-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; /* cho phép xuống hàng */
+            gap: 25px;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+            ul.blog-list li {
+                background-color: #fff;
+                border-radius: 15px;
+                box-shadow: 0 8px 24px rgba(26, 35, 126, 0.15);
+                padding: 25px 30px;
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                width: calc(50% - 12.5px); /* 2 phần tử trên 1 hàng trừ gap */
+                height: 250px;
+                text-align: left;
+                box-sizing: border-box;
+                margin-bottom: 30px;
+            }
+
+
+                ul.blog-list li:hover {
+                    transform: translateY(-6px);
+                    box-shadow: 0 16px 40px rgba(26, 35, 126, 0.25);
+                }
+
+
+                ul.blog-list li h2 {
+                    width: 100%; /* chiếm hết chiều ngang của li */
+                    height: 50px; /* chiều cao cố định */
+                    line-height: 50px; /* căn giữa theo chiều dọc */
+                    overflow: hidden; /* nếu text dài sẽ ẩn phần thừa */
+                    white-space: nowrap; /* không xuống dòng */
+                    text-overflow: ellipsis; /* hiện dấu ... nếu text quá dài */
+                }
+
+                ul.blog-list li p {
+                    width: 100%;
+                    height: 50px; /* chiều cao cố định */
+                    overflow-y: auto; /* cho phép cuộn dọc nếu nội dung vượt */
+                }
+
+                ul.blog-list li a.btn {
+                    width: 120px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center; /* căn giữa theo chiều dọc */
+                    justify-content: center; /* căn giữa theo chiều ngang */
+                    padding: 0; /* bỏ padding vì đã set size cố định */
+                    font-size: 1rem;
+                }
+
+        ul.blog-list li a.btn:hover {
+            background-color: #1a237e;
+            color: #fff;
+            box-shadow: 0 6px 15px rgba(26, 35, 126, 0.3);
+        }
+
+        /* Responsive nhỏ hơn 600px */
+        @@media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+
+            ul.blog-list li {
+                padding: 20px 18px;
+                max-width: 100%;
+            }
+
+            ul.blog-list li h2 {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+            }
+
+            ul.blog-list li p {
+                font-size: 1rem;
+                margin-bottom: 14px;
+            }
+
+            ul.blog-list li a.btn {
+                padding: 8px 14px;
+                font-size: 0.9rem;
+                border-radius: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Danh sách Blog</h1>
+    <ul class="blog-list">
+        <li>
+            <h2>Blog 1: Học lập trình web</h2>
+            <p>Giới thiệu các kiến thức cơ bản về HTML, CSS và JavaScript.</p>
+            <a asp-controller="Home" asp-action="Blog1" class="btn">Đọc thêm</a>
+        </li>
+        <li>
+            <h2>Blog 2: Làm quen với ASP.NET Core</h2>
+            <p>Tổng quan về ASP.NET Core MVC và cách tạo web app đơn giản.</p>
+            <a asp-controller="Home" asp-action="Blog2" class="btn">Đọc thêm</a>
+        </li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="fw-bold text-primary mb-4">Làm quen với Frontend: HTML, CSS, JS</h1>
+            <p class="text-muted mb-4">Ngày đăng: 01/05/2025</p>
+            <img src="/img/1.jpg" alt="Frontend" class="img-fluid rounded mb-4 shadow-sm" />
+
+            <p>
+                Nếu bạn mới bắt đầu học lập trình web, frontend là điểm khởi đầu hoàn hảo. Frontend là phần giao diện người dùng mà bạn tương tác mỗi khi truy cập vào một trang web.
+            </p>
+            <h4 class="mt-4">1. HTML - Khung xương của trang web</h4>
+            <p>
+                HTML (HyperText Markup Language) giúp bạn xác định các thành phần như tiêu đề, đoạn văn, hình ảnh,... Nó là nền tảng mà mọi trang web đều có.
+            </p>
+            <h4 class="mt-4">2. CSS - Làm đẹp cho giao diện</h4>
+            <p>
+                CSS (Cascading Style Sheets) giúp bạn tạo ra những thiết kế đẹp mắt, từ màu sắc, khoảng cách đến hiệu ứng chuyển động.
+            </p>
+            <h4 class="mt-4">3. JavaScript - Làm cho trang web trở nên sống động</h4>
+            <p>
+                JavaScript là ngôn ngữ lập trình phía client giúp bạn xử lý sự kiện, tương tác, form, và tạo hiệu ứng động một cách linh hoạt.
+            </p>
+
+            <div class="mt-5">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">← Quay lại danh sách bài viết</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .blog-container {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .blog-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-color, #14103B);
+    }
+
+    .blog-date {
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+
+    .blog-img {
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .blog-content h4 {
+        margin-top: 25px;
+        font-size: 1.25rem;
+        color: var(--btn-color--1, #FF7A3C);
+    }
+
+    .blog-content p {
+        line-height: 1.7;
+        font-size: 1.05rem;
+        color: #333;
+    }
+
+    .back-link {
+        margin-top: 40px;
+    }
+</style>

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<DACS2.Models.KhoaHoc>
+
+@{
+    ViewData["Title"] = "Danh sách khóa học";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
+<link rel="stylesheet" href="~/font/fontawesome-free-6.5.1-web/fontawesome-free-6.5.1-web/css/all.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                <a asp-area="Admin" asp-action="Add" class="btn btn-primary mb-2">+ Thêm khóa học</a>
+             
+            </div>
+
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table id="khoaHocTable" class="display nowrap table table-bordered" style="width:100%">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Tên khóa học</th>
+                                <th>Ngon ngu</th>
+                                
+                                <th>Mô tả</th>
+                                <th>Giá</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var khoaHoc in Model)
+                            {
+                                <tr>
+                                    <td><img src="@khoaHoc.HinhAnh" class="img-thumbnail" style="padding: 0" width="80" height="80" />
+                                    <td>@khoaHoc.TenKhoaHoc</td>
+                                    <td>@khoaHoc.NgonNgu</td>
+                                    <td>
+                                        <div class="noi-dung-khoa-hoc">
+                                                @Html.Raw(khoaHoc.MoTa)
+                                        </div>
+                                    </td>
+                                    <td>@string.Format("{0:N0} VNĐ", khoaHoc.Gia)</td>
+                                    <td>
+                                        <a asp-action="Display" asp-route-id="@khoaHoc.KhoaHocId" class="btn btn-info btn-sm text-white">
+                                            <i class="fas fa-eye"></i> Xem
+                                        </a>
+                                        <a asp-action="Update" asp-route-id="@khoaHoc.KhoaHocId" class="btn btn-warning btn-sm text-white">
+                                            <i class="fas fa-pencil-alt"></i> Sửa
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@khoaHoc.KhoaHocId" class="btn btn-danger btn-sm text-white">
+                                            <i class="fas fa-trash-alt"></i> Xóa
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted text-center">Không có khóa học nào.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        const table = $('#khoaHocTable').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+            },
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50, 100],
+            initComplete: function () {
+                // Di chuyển thanh tìm kiếm ra ngoài nếu muốn
+                $('#khoaHocTable_filter').appendTo('#khoaHocTable_filter_custom');
+                $('#khoaHocTable_filter label').addClass('mb-0');
+            }
+        });
+    });
+</script>
+
+<style>
+    #khoaHocTable_filter_custom {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #khoaHocTable_filter input {
+        margin-left: 10px;
+        border-radius: 4px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+    }
+
+    .dataTables_length {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+        .dataTables_length label {
+            padding-top: 5px; /* Tăng chiều cao lên thêm 5px */
+        }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+
+    .noi-dung-khoa-hoc p {
+        padding: 0;
+        margin: 0;
+    }
+
+</style>

@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Khóa Học Back-End";
+    var khoaHocList = ViewBag.KhoaHocList as List<DACS2.Models.KhoaHoc>;
+}
+
+<div class="container font-lotrinh">
+    <h2 class="page-title">Khóa Học Back-End</h2>
+    <div class="row g-4 justify-content-center">
+        @foreach (var khoaHoc in khoaHocList.Where(k => k.TheLoai == "Back-End"))
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card course-card h-100 shadow-sm">
+                    <img src="@khoaHoc.HinhAnh" class="card-img-top" alt="Frontend Course">
+                    <div class="card-body">
+                        <h5 class="card-title">@khoaHoc.TenKhoaHoc</h5>
+                        @Html.Raw(khoaHoc.MoTa)
+                        <h6 class="card-title"> @khoaHoc.Gia.ToString("N0") VNĐ</h6>
+                        <a href="#" class="btn btn-primary btn-sm">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    /* Dùng font và nền như phần Front-End */
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
+        margin: 0;
+        padding: 0;
+    }
+
+    .font-lotrinh {
+        padding: 30px 15px;
+        min-height: 800px;
+    }
+
+    .page-title {
+        text-align: center;
+        font-weight: 700;
+        font-size: 2.75rem;
+        margin-bottom: 40px;
+        color: #1a237e;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+  
+</style>

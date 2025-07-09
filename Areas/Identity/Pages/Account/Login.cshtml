@@ -1,0 +1,109 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Sign In";
+    Layout = null; // Nếu bạn không muốn layout, dùng dòng này. Nếu dùng Layout khác, có thể bỏ đi.
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/styde_LogRe.css" />
+</head>
+<body>
+    <div class="container" id="authContainer">
+        <!-- Sign In Form -->
+        <div class="container__form container--signin">
+            <form class="form" id="login-form" method="post" class="form">
+                <h2 class="form__title">Đăng nhập</h2>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <input asp-for="Input.Email" class="input" placeholder="Email" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                <input asp-for="Input.Password" class="input" placeholder="Mật khẩu" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input asp-for="Input.RememberMe" class="form-check-input" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+
+                <button type="submit" class="btn">Đăng nhập</button>
+
+                <a asp-page="./ForgotPassword" class="link">Bạn quên mật khẩu?</a>
+            </form>
+        </div>
+
+        <!-- Overlay -->
+        <div class="container__overlay">
+            <div class="overlay">
+                <div class="overlay__panel overlay--right">
+                    <a asp-page="./Register">
+                        <button class="btn" id="signIn">Đăng ký</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById("authContainer");
+        const signUpBtn = document.getElementById("signUp");
+
+        signUpBtn.addEventListener("click", () => {
+            container.classList.add("right-panel-active");
+        });
+
+    </script>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
+
+
+<style>
+    .input {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+        background-color: #fff;
+        transition: border-color 0.3s;
+    }
+
+        .input:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+        }
+
+    button.btn.btn-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        cursor: pointer;
+    }
+
+        button.btn.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+</style>

@@ -1,0 +1,316 @@
+﻿@using System.Linq
+
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    var khoaHocList = ViewBag.KhoaHocList as List<DACS2.Models.KhoaHoc>;
+    var khoaHocNoiBatTop3 = ViewBag.KhoaHocNoiBatTop3 as List<DACS2.Models.KhoaHoc>;
+}
+
+
+<section class="hero-section text-center text-white d-flex flex-column align-items-center justify-content-center">
+    <div class="container py-5">
+        <h1 class="display-4 font-weight-bold">ChillTech</h1>
+        <p class="mt-3 lead">
+            Cùng ChillTech định hướng tương lai!
+        </p>
+    </div>
+</section>
+
+<div class="topic-wrapper d-flex justify-content-center flex-wrap gap-2">
+    <button class="btn topic-btn">Frontend</button>
+    <button class="btn topic-btn">HTML & CSS</button>
+    <button class="btn topic-btn">Backend</button>
+    <button class="btn topic-btn">Data</button>
+    <button class="btn topic-btn">DevOps</button>
+</div>
+
+
+<!-- SECTION BÀI VIẾT NỔI BẬT -->
+<section class="course-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4 font-weight-bold">Bài Viết Nổi Bật</h2>
+        <div class="row">
+            <!-- Blog post 1 -->
+            <div class="col-md-6 mb-4">
+                <div class="card blog-card shadow-sm h-100">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="/img/1.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="Frontend Image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body d-flex flex-column">
+                                <h5 style="min-height: 40px;" class="card-title">Làm quen với Frontend: HTML, CSS, JS</h5>
+                                <p class="card-text text-muted small">Ngày đăng: 01/05/2025</p>
+                                <p class="card-text">Bài viết này hướng dẫn cơ bản về cách bắt đầu với frontend bằng HTML, CSS và JavaScript.</p>
+                                <a asp-controller="Home" asp-action="Blog1" class="btn btn-sm btn-outline-primary mt-auto align-self-start">Đọc thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog post 2 -->
+            <div class="col-md-6 mb-4">
+                <div class="card blog-card shadow-sm h-100">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="/img/7.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="Backend Image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body d-flex flex-column">
+                                <h5 style="min-height: 40px;" class="card-title">Hành trình trở thành Backend Developer</h5>
+                                <p class="card-text text-muted small">Ngày đăng: 28/04/2025</p>
+                                <p class="card-text">Khám phá những công nghệ backend phổ biến như Node.js, ASP.NET Core, và cơ sở dữ liệu.</p>
+                                <a asp-controller="Home" asp-action="Blog2" class="btn btn-sm btn-outline-primary mt-auto align-self-start">Đọc thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Có thể thêm bài viết mới tại đây -->
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: KHÓA HỌC NỔI BẬT -->
+@if (khoaHocNoiBatTop3 != null && khoaHocNoiBatTop3.Any())
+{
+    <section class="course-section py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4 font-weight-bold">Các Khóa Học Nổi Bật</h2>
+            <div class="row">
+                @foreach (var item in khoaHocNoiBatTop3)
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="card course-card h-100 shadow-sm">
+                            <img src="@item.HinhAnh" class="card-img-top" alt="Frontend Course">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.TenKhoaHoc</h5>
+                                @Html.Raw(item.MoTa)
+                                <h6 class="card-title">@item.Gia.ToString("N0") VNĐ</h6>
+                                <a asp-action="Display" asp-controller="KhoaHoc" asp-area="NguoiDung" asp-route-id="@item.KhoaHocId" class="btn btn-success">Xem chi tiết</a>
+                                <a asp-area="NguoiDung"
+                                   asp-controller="KhoaHoc"
+                                   asp-action="BaiHocIndex"
+                                   asp-route-id="@item.KhoaHocId"
+                                   class="btn btn-primary">
+                                    Học Thử
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- SECTION: KHÓA HỌC -->
+@if (khoaHocList != null && khoaHocList.Any())
+{
+    <section class="course-section py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4 font-weight-bold">Các Khóa Học</h2>
+            <div class="row">
+
+
+
+                @foreach (var item in khoaHocList)
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="card course-card h-100 shadow-sm">
+                            <img src="@item.HinhAnh" class="card-img-top" alt="Frontend Course">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.TenKhoaHoc</h5>
+                                @Html.Raw(item.MoTa)
+                                <h6 class="card-title"> @item.Gia.ToString("N0") VNĐ</h6>
+                                <a asp-action="Display" asp-controller="KhoaHoc" asp-area="NguoiDung" asp-route-id="@item.KhoaHocId" class="btn btn-success">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+    
+
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .blog-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.blog-card:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: translateY(-6px);
+}
+
+.blog-card .row.g-0 {
+  flex-grow: 1;
+}
+
+.blog-card .col-md-4 {
+  padding: 0; /* để ảnh sát biên */
+}
+
+.blog-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover img {
+  transform: scale(1.05);
+}
+
+.blog-card .col-md-8 {
+  padding: 20px 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card .card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+  min-height: 40px;
+  margin-bottom: 0.6rem;
+}
+
+.blog-card .card-text.text-muted {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+
+.blog-card .card-text {
+  font-size: 1rem;
+  color: #444;
+  flex-grow: 1;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.blog-card a.btn {
+  align-self: flex-start;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.blog-card a.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+  background-color: transparent;
+}
+
+.blog-card a.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+    .course-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .course-card img.card-img-top {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #eaeaea;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover img.card-img-top {
+            transform: scale(1.05);
+        }
+
+    .card-body {
+        padding: 16px 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+        color: #222;
+        min-height: 48px; /* Giữ chiều cao tiêu đề đồng đều */
+    }
+
+    .card-body > h6.card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #e03e2f; /* màu đỏ nổi bật cho giá */
+        margin-bottom: 1rem;
+    }
+
+    .card-body p, .card-body span {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+
+    .card-body a.btn {
+        margin-right: 10px;
+        margin-top: auto;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .card-body a.btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        margin-top: 10px;
+    }
+
+        .card-body a.btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .card-body a.btn-success {
+        background-color: #28a745; /* xanh lá */
+        border-color: #28a745;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+        .card-body a.btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+
+</style>

@@ -1,0 +1,18 @@
+# Ignore build output
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+.vs/
+*.dbmdl
+
+# Ignore secrets
+appsettings.*.json
+
+# Ignore publish folder
+publish/
+
+# Ignore Rider project files
+.idea/

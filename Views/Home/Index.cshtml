@@ -1,0 +1,129 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+
+
+<section class="hero-section text-center text-white d-flex flex-column align-items-center justify-content-center">
+    <div class="container py-5">
+        <h1 class="display-4 font-weight-bold">ChillTech</h1>
+        <p class="mt-3 lead">
+            Cùng ChillTech định hướng tương lai!
+        </p>
+    </div>
+</section>
+
+<!-- Nút chủ đề (tràn giữa 2 section) -->
+<div class="topic-wrapper d-flex justify-content-center flex-wrap">
+    <button class="btn topic-btn">Frontend</button>
+    <button class="btn topic-btn">Backend</button>
+    <button class="btn topic-btn">Data</button>
+    <button class="btn topic-btn">AI</button>
+    <button class="btn topic-btn">DevOps</button>
+</div>
+
+<!-- SECTION BÀI VIẾT NỔI BẬT -->
+<section class="course-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4 font-weight-bold">Bài Viết Nổi Bật</h2>
+        <div class="row">
+            <!-- Blog post 1 -->
+            <div class="col-md-6 mb-4">
+                <div class="card blog-card shadow-sm h-100">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="/img/nen1.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="Frontend Image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body d-flex flex-column">
+                                <h5 style="min-height: 40px;" class="card-title">Làm quen với Frontend: HTML, CSS, JS</h5>
+                                <p class="card-text text-muted small">Ngày đăng: 01/05/2025</p>
+                                <p class="card-text">Bài viết này hướng dẫn cơ bản về cách bắt đầu với frontend bằng HTML, CSS và JavaScript.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary mt-auto align-self-start">Đọc thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog post 2 -->
+            <div class="col-md-6 mb-4">
+                <div class="card blog-card shadow-sm h-100">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="/img/nen2.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="Backend Image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body d-flex flex-column">
+                                <h5 style="min-height: 40px;" class="card-title">Hành trình trở thành Backend Developer</h5>
+                                <p class="card-text text-muted small">Ngày đăng: 28/04/2025</p>
+                                <p class="card-text">Khám phá những công nghệ backend phổ biến như Node.js, ASP.NET Core, và cơ sở dữ liệu.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary mt-auto align-self-start">Đọc thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STYLE -->
+<style>
+    .object-fit-cover {
+        object-fit: cover;
+    }
+
+    .blog-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        background-color: white;
+    }
+
+    .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .blog-card .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .blog-card .card-text {
+        font-size: 0.95rem;
+        color: #555;
+    }
+
+    .blog-card .card-text.text-muted {
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    .blog-card .btn-outline-primary {
+        padding: 5px 12px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+    }
+
+    .card-body h5
+    {
+        min-height: 40px;
+    }
+
+    /* Responsive fix */
+    @@media (max-width: 768px) {
+        .blog-card .row {
+            flex-direction: column;
+        }
+
+        .blog-card img {
+            height: 200px;
+        }
+    }
+</style>
+

@@ -1,0 +1,65 @@
+﻿@model DACS2.Models.Momo.MomoExecuteResponseModel
+
+@{
+    ViewData["Title"] = "Thanh toán Momo";
+
+
+
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Đảm bảo bạn đang sử dụng layout chính
+}
+
+<style>
+    body, html {
+        height: 100%;
+    }
+
+    .main-wrapper {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #f9f9f9;
+    }
+
+    .payment-box {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+    }
+
+        .payment-box h1 {
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        .payment-box p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .payment-box strong {
+            font-weight: 600;
+        }
+</style>
+
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        <div class="payment-box">
+            <h1>Thanh Toán Thành Công</h1>
+            <p>Mã giao dịch: <strong>@Model.OrderId</strong></p>
+            <p>Giá: <strong>@Model.Amount</strong></p>
+            <p>Nội dung: <strong>@Model.OrderInfo</strong></p>
+        </div>
+    </div>
+</div>

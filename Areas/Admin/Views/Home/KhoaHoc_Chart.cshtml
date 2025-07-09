@@ -1,0 +1,39 @@
+﻿@using DACS2.ViewModels;
+@model List<string>
+@using Newtonsoft.Json
+
+
+
+<canvas id="khoaHocChart" width="400" height="300"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const khoaHocCtx = document.getElementById('khoaHocChart').getContext('2d');
+
+    new Chart(khoaHocCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonConvert.SerializeObject(Model)),
+            datasets: [{
+                label: 'Khóa học',
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Select((_, index) => index + 1))), // mock số liệu
+                backgroundColor: '#FF9F40'
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Danh sách Khóa học (theo thứ tự)'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });
+</script>

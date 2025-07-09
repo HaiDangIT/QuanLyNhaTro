@@ -1,0 +1,75 @@
+﻿@using DACS2.ViewModels;
+@model DashboardViewModel
+@using Newtonsoft.Json
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="chart-container">
+    <!-- Hàng đầu: 2 biểu đồ cột -->
+    <div class="chart-row">
+        <!-- Biểu đồ 1: Cột -->
+        <div class="chart-card">
+            @Html.Partial("ChuDe_Chart", Model.TenChuDes)
+        </div>
+
+        <!-- Biểu đồ 2: Cột -->
+        <div class="chart-card">
+            @Html.Partial("KhoaHoc_Chart", Model.TenKhoaHocs)
+        </div>
+    </div>
+
+    <!-- Hàng 2: Biểu đồ tròn -->
+    <div class="chart-card chart-full">
+        @Html.Partial("BaiHoc_Chart", Model.SoBaiTheoKhoaHoc)
+    </div>
+</div>
+
+
+
+<style>
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        background-color: white;
+    }
+
+    .chart-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .chart-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        padding: 20px;
+        transition: transform 0.2s ease;
+    }
+
+    .chart-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .chart-full {
+        width: 35%;
+
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #2c3e50;
+    }
+
+    canvas {
+        width: 90% !important;
+        height: 400px !important;
+    }
+
+</style>

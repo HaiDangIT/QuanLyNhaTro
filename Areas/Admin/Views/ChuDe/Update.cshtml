@@ -1,0 +1,84 @@
+﻿@model DACS2.Models.ChuDe
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Chủ Đề";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/style_Admin_2.css" asp-append-version="true">
+
+<!-- Thêm vào _LayoutAdmin.cshtml hoặc view cụ thể -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+
+<form class="form-1" asp-controller="ChuDe" asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ChuDeId" />
+    <h2>Chỉnh sửa Chủ Đề</h2>
+    <div class="form-group">
+        <label asp-for="TenChuDe"></label>
+        <input asp-for="TenChuDe" class="form-control" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="MoTa" class="form-label fw-bold"></label>
+        <textarea asp-for="MoTa" class="form-control" id="editorMoTa" rows="3" required></textarea>
+    </div>
+
+
+    <div class="form-group">
+        <label>Hình ảnh</label>
+        <input type="file" id="imageInput1" name="hinhanh" class="form-control" />
+    </div>
+
+    <div class="row" style="max-height: 150px">
+        <div class="col-6 hinhanh text-start">
+            <h5>Current Image</h5>
+            <img src="@Model.HinhAnh" alt="Product Image" style="max-width:200px; display:none;margin-bottom: 10px;" id="imageInput1_preview" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Cập nhật</button>
+
+    <!-- Thêm lớp CSS để điều chỉnh vị trí của thẻ a -->
+    <div class="btn-container">
+        <a asp-controller="ChuDe" asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </div>
+</form>
+
+<script>
+    CKEDITOR.replace('editorMoTa');
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function previewImage(inputId, previewId) {
+            document.getElementById(inputId).addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById(previewId).src = e.target.result;
+                        document.getElementById(previewId).style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        previewImage("imageInput1", "imageInput1_preview");
+    });
+</script>
+
+<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<!-- Thêm CSS để điều chỉnh lề và căn trái -->
+<style>
+    .btn-container {
+        margin-top: 10px; /* Cách phần nút 'Cập nhật' một chút */
+        text-align: left; /* Căn trái */
+    }
+
+        .btn-container a {
+            margin-left: 0; /* Loại bỏ lề trái nếu không cần */
+        }
+</style>

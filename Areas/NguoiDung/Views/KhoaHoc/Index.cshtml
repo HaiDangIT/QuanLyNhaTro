@@ -1,0 +1,56 @@
+﻿@model IEnumerable<DACS2.Models.KhoaHoc>
+
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+
+
+<section class="hero-section text-center text-white d-flex flex-column align-items-center justify-content-center">
+    <div class="container py-5">
+        <h1 class="display-4 font-weight-bold">ChillTech</h1>
+        <p class="mt-3 lead">
+            Cùng ChillTech định hướng tương lai!
+        </p>
+    </div>
+</section>
+
+<!-- Nút chủ đề (tràn giữa 2 section) -->
+<div class="topic-wrapper d-flex justify-content-center flex-wrap">
+    <button class="btn topic-btn">Frontend</button>
+    <button class="btn topic-btn">Backend</button>
+    <button class="btn topic-btn">Data</button>
+    <button class="btn topic-btn">AI</button>
+    <button class="btn topic-btn">DevOps</button>
+</div>
+
+<section class="course-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4 font-weight-bold">Các Khóa Học</h2>
+        <div class="row">
+
+            @foreach(var item in Model)
+            {
+            <div class="col-md-3 mb-4">
+                <div class="card course-card h-100 shadow-sm">
+                    <img src="@item.HinhAnh" class="card-img-top" alt="Frontend Course">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.TenKhoaHoc</h5>
+                        @Html.Raw(item.MoTa)
+                        <h6 class="card-title"> @item.Gia.ToString("N0") VNĐ</h6>
+                        <a asp-action="BaiHocIndex" asp-controller="KhoaHoc" asp-area="NguoiDung" asp-route-id="@item.KhoaHocId" class="btn btn-primary">Xem</a>
+                    </div>
+                </div>
+            </div>
+    
+            }
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .course-section {
+        background-color: white !important;
+    }
+</style>

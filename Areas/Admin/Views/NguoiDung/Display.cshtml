@@ -1,0 +1,111 @@
+﻿@model DACS2.Models.NguoiDung
+
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Thông tin cá nhân</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.HinhAnh))
+            {
+                <img src="@Model.HinhAnh" alt="Hình ảnh" class="img-thumbnail" style="width: 100%; height: auto;" />
+            }
+            else
+            {
+                <img src="/img/nen1.jpg" alt="No Image" class="img-thumbnail" />
+            }
+        </div>
+
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Họ tên:</th>
+                    <td>@Model.HoTen</td>
+                </tr>
+                <tr>
+                    <th>Giới tính:</th>
+                    <td>
+                        @(Model.GioiTinh == 1 ? "Nam" : Model.GioiTinh == 0 ? "Nữ" : "Khác/Không xác định")
+                    </td>
+                </tr>
+                <tr>
+                    <th>Ngày sinh:</th>
+                    <td>@Model.NgaySinh</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>Số điện thoại:</th>
+                    <td>@Model.SDT</td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ:</th>
+                    <td>@Model.DiaChi</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+@*     <div class="mt-5">
+        <h4>Khóa học đã tham gia</h4>
+        <ul class="thongtinkhoahoc">
+            @{
+                var khoaHocNguoiDung = ((List<DACS2.Models.CT_NguoiDung_KhoaHoc>)ViewBag.KhoaHocList)
+                .Where(kh => kh.NguoiDungId == Model.NguoiDungId)
+                .Select(kh => new
+                {
+                    TenKhoaHoc = kh.KhoaHoc?.TenKhoaHoc,
+                    MoTa = kh.KhoaHoc?.MoTa,
+                    HinhAnh = kh.KhoaHoc?.HinhAnh,
+                    GiaKhoa = kh.KhoaHoc?.Gia
+                })
+                .ToList();
+
+                foreach (var tenKhoaHoc in khoaHocNguoiDung)
+                {
+                    <div class="card" style="width: 18rem;">
+                        <img src="@tenKhoaHoc.HinhAnh" class="card-img-top" alt="..." style="height: 140px">
+                        <div class="card-body">
+                            <h5 class="card-title">@tenKhoaHoc.TenKhoaHoc</h5>
+                            <p class="card-text">@Html.Raw(tenKhoaHoc.MoTa)</p>
+                            <p class="card-text">@tenKhoaHoc.GiaKhoa</p>
+                        </div>
+                    </div>
+                }
+            }
+        </ul>
+    </div> *@
+
+
+
+    @if (Model.DsHinh != null && Model.DsHinh.Any())
+    {
+        <h4 class="mt-5">Album hình ảnh</h4>
+        <div class="row">
+            @foreach (var hinh in Model.DsHinh)
+            {
+                <div class="col-md-3 mb-3">
+                    <img src="@hinh" class="img-fluid rounded" alt="Hình Album" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+<style>
+    .thongtinkhoahoc
+    {
+        padding: 0;
+        display: flex;
+        gap: 20px;
+
+    }
+</style>

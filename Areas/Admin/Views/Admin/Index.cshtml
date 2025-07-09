@@ -1,0 +1,74 @@
+﻿@model DACS2.Models.Admin
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="profile-container d-flex">
+    <h2 style="color: #14103B" class="text-primary">Thông tin quản trị viên</h2>
+
+    <form asp-action="Update" method="post" class="profile-form" enctype="multipart/form-data">
+        <input type="hidden" asp-for="AdminId" />
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="avatar-wrapper" onclick="document.getElementById('HinhAnh').click();">
+            <img id="avatarPreview" src="@(string.IsNullOrEmpty(Model.HinhAnh) ? "/images/avatrdefault.jpg" : $"/uploads/avatars/{Model.HinhAnh}")" alt="Avatar" />
+            <input type="file" id="HinhAnh" name="HinhAnhFile" accept="image/*" onchange="previewAvatar(event)" style="display: none;" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HoTen">Họ và tên</label>
+            <input asp-for="HoTen" class="form-control" />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GioiTinh">Giới tính</label>
+            <select asp-for="GioiTinh" class="form-control">
+                <option value="">-- Chọn --</option>
+                <option value="0" selected="@((Model.GioiTinh == 0).ToString())">Nam</option>
+                <option value="1" selected="@((Model.GioiTinh == 1).ToString())">Nữ</option>
+            </select>
+            <span asp-validation-for="GioiTinh" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NgaySinh">Ngày sinh</label>
+            <input asp-for="NgaySinh" type="date" class="form-control" />
+            <span asp-validation-for="NgaySinh" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SDT">Số điện thoại</label>
+            <input asp-for="SDT" class="form-control" />
+            <span asp-validation-for="SDT" class="text-danger"></span>
+        </div>
+
+        <div class="form-actions d-inline-flex gap-2 me-3">
+            <button type="submit" class="btn btn-success">Cập nhật</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewAvatar(event) {
+        const input = event.target;
+        const reader = new FileReader();
+
+        reader.onload = function () {
+            const avatarPreview = document.getElementById('avatarPreview');
+            avatarPreview.src = reader.result;
+        };
+
+        if (input.files && input.files[0]) {
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+

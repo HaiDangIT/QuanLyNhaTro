@@ -1,0 +1,153 @@
+:root {
+    --primary-color: #14103B;       /* Màu chủ đạo: xanh dương */
+    --secondary-color: #6c757d;     /* Màu phụ: xám */
+    --background-color: #ffffff;    /* Màu nền */
+    --text-color: #ffffff;          /* Màu chữ chính */
+    --hover-color: #0056b3;         /* Màu hover nút */
+    --border-color: #dee2e6;        /* Màu viền */
+    --btn-color--1: #FF7A3C;
+}
+a{
+    text-decoration: none;
+}
+
+/* Header cố định (sticky) */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 12px 0;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.header nav a {
+    text-decoration: none;
+}
+
+.header nav a:hover {
+  transform: scale(1.1); 
+  text-decoration: none;
+}
+/* Hero section */
+.hero-section {
+    color: white;
+    min-height: 500px;
+    padding-top: 3px; /* Để không bị che bởi header */
+    border-radius: 0 0 25% 25%;
+    position: relative;
+}
+
+.header, .hero-section {
+    background: linear-gradient(270deg, var(--primary-color), var(--btn-color--1), var(--primary-color));
+    background-size: 600% 600%;
+    animation: gradientMove 15s ease infinite;
+}
+
+/* Nút */
+.hero-section .btn {
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+/* Nút chủ đề chung */
+.topic-wrapper {
+  margin-top: -70px; /* đẩy hàng nút lên giao giữa 2 section */
+  z-index: 2;
+  position: relative;
+}
+
+.topic-btn {
+  margin: 10px;
+  /* padding: 20px; */
+  height: 100px;
+  width: 200px;
+  border-radius: 5px;
+  font-weight: 500;
+  background-color: white;
+  color: #0b0d3e;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px var(--primary-color);
+}
+
+.topic-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: white;
+  transform: scale(1.1); 
+}
+
+/* Section tiếp theo */
+.next-section {
+  padding-top: 60px;
+}
+
+.course-section {
+  background-color: #f8f9fa;
+}
+
+.course-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .course-card img {
+        min-height: 130px;
+        max-height: 130px;
+    }
+
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-body .card-title {
+    min-height: 25px;
+    max-height: 25px;
+}
+
+.card-body .card-text {
+    min-height: 100px;
+    max-height: 100px;
+}
+
+/* FOOOTER */
+.footer {
+    background: var(--primary-color);
+    color: #fff; /* Đảm bảo chữ sáng trên nền tối */
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.footer a {
+  color: #fff; /* Đặt màu chữ của các liên kết */
+}
+
+.footer a:hover {
+  text-decoration: underline;
+  color: var(--hover-color);
+}
+
+
+/* Responsive padding */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 28px;
+  }
+  .hero-section p {
+    font-size: 16px;
+  }
+}

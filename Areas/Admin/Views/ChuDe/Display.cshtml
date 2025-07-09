@@ -1,0 +1,34 @@
+﻿@model DACS2.Models.ChuDe
+
+@{
+    ViewData["Title"] = "Chi tiết chủ đề";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg mx-auto" style="max-width: 700px;">
+        <div class="card-header bg-primary text-white text-center">
+            <h4>Chi tiết chủ đề</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.TenChuDe</h5>
+            <p class="card-text"><strong>Mô tả:</strong></p>
+            <p>@Html.Raw(Model.MoTa)</p>
+
+            <div class="text-end">
+                <a asp-controller="ChuDe" asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+</style>

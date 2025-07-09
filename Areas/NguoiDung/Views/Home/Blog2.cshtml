@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<style>
+    .blog-container {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .blog-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-color, #14103B);
+    }
+
+    .blog-date {
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+
+    .blog-img {
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .blog-content h4 {
+        margin-top: 25px;
+        font-size: 1.25rem;
+        color: var(--btn-color--1, #FF7A3C);
+    }
+
+    .blog-content p {
+        line-height: 1.7;
+        font-size: 1.05rem;
+        color: #333;
+    }
+
+    .back-link {
+        margin-top: 40px;
+    }
+</style>
+
+<div class="container blog-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="blog-title">Hành trình trở thành Backend Developer</h1>
+            <p class="blog-date">Ngày đăng: 28/04/2025</p>
+            <img src="/img/7.jpg" alt="Backend" class="img-fluid blog-img" />
+
+            <div class="blog-content">
+                <p>Backend Developer là người chịu trách nhiệm xử lý logic phía máy chủ, truy vấn dữ liệu và đảm bảo rằng mọi thao tác người dùng thực hiện đều được phản hồi chính xác.</p>
+
+                <h4>1. Chọn ngôn ngữ backend</h4>
+                <p>Một số ngôn ngữ phổ biến: Node.js (JavaScript), ASP.NET Core (C#), Java Spring Boot, Python với Django hoặc Flask.</p>
+
+                <h4>2. Làm việc với cơ sở dữ liệu</h4>
+                <p>Backend dev thường thao tác với các hệ quản trị CSDL như SQL Server, MySQL, PostgreSQL hoặc MongoDB để lưu trữ và truy vấn dữ liệu.</p>
+
+                <h4>3. API & Bảo mật</h4>
+                <p>Biết cách xây dựng và bảo mật API (RESTful hoặc GraphQL) là kỹ năng thiết yếu để frontend giao tiếp với backend một cách an toàn.</p>
+            </div>
+
+            <div class="back-link">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">← Quay lại danh sách bài viết</a>
+            </div>
+        </div>
+    </div>
+</div>

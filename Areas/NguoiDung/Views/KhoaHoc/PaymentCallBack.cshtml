@@ -1,0 +1,26 @@
+﻿@model DACS2.Models.Momo.MomoExecuteResponseModel
+
+@{
+    ViewData["Title"] = "Thanh toán Momo";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h3>Kết quả thanh toán</h3>
+    <p><strong>Order ID:</strong> @Model.OrderId</p>
+    <p><strong>Amount:</strong> @Model.Amount</p>
+    <p><strong>Order Info:</strong> @Model.OrderInfo</p>
+
+    @if (Model.Amount != "0")
+    {
+        <p style="color: green;">Thanh toán thành công!</p>
+    }
+    else
+    {
+        <p style="color: red;">Thanh toán không thành công!</p>
+    }
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay lại trang chủ</a>
+</div>

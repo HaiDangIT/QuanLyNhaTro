@@ -1,0 +1,59 @@
+﻿@model DACS2.Models.TestCase
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/style_Admin_2.css" asp-append-version="true" />
+
+<h2 class="mb-4">➕ Thêm Test Case</h2>
+
+<form asp-area="Admin" asp-controller="TestCase" asp-action="Add" method="post" class="form-1" novalidate>
+    <div class="form-group mb-3">
+        <label asp-for="BaiHocId" class="form-label">Chọn Bài Học</label>
+        <select asp-for="BaiHocId" asp-items="ViewBag.BaiHoc" class="form-select" required>
+            <option value="">-- Chọn bài học --</option>
+        </select>
+        <span asp-validation-for="BaiHocId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="CssSelector" class="form-label">CSS Selector</label>
+        <input asp-for="CssSelector" class="form-control" required />
+        <span asp-validation-for="CssSelector" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="TestType" class="form-label">Loại kiểm tra</label>
+        <input asp-for="TestType" class="form-control" required />
+        <span asp-validation-for="TestType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Property" class="form-label">Thuộc tính</label>
+        <input asp-for="Property" class="form-control" required />
+        <span asp-validation-for="Property" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ExpectedValue" class="form-label">Giá trị mong đợi</label>
+        <input asp-for="ExpectedValue" class="form-control" required />
+        <span asp-validation-for="ExpectedValue" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="UseJudge0" />
+            <label class="form-check-label" asp-for="UseJudge0">Sử dụng Judge0 để kiểm tra</label>
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Thêm</button>
+</form>

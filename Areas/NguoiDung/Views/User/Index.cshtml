@@ -1,0 +1,76 @@
+﻿@model DACS2.Models.NguoiDung
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="profile-container">
+    <h2 style="color: #14103B" class="text-primary">Thông tin cá nhân</h2>
+
+    <form asp-action="Update" method="post" class="profile-form" enctype="multipart/form-data">
+        <input type="hidden" asp-for="NguoiDungId" />
+        <input type="hidden" asp-for="UserId" />
+
+        <div style="margin: 0" class="form-group d-flex justify-content-center">
+            <label class="d-flex" for="AvatarUpload">
+                <img src="@(!string.IsNullOrEmpty(Model.HinhAnh) ? Model.HinhAnh : "/images/avatardefault.jpg")"
+                     class="rounded-circle border border-primary shadow"
+                     style="width: 120px; height: 120px; object-fit: cover;"
+                     alt="Avatar" />
+
+            </label>
+            <input type="file" id="AvatarUpload" name="Avatar" accept="image/*" style="display: none;" onchange="previewImage(this)" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HoTen">Họ Tên</label>
+            <input style="height: 45px" asp-for="HoTen" class="form-control" />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GioiTinh">Giới tính</label>
+            <select style="height: 43px" asp-for="GioiTinh" class="form-control">
+                <option value="">-- Chọn --</option>
+                <option value="0">Nam</option>
+                <option value="1">Nữ</option>
+            </select>
+            <span asp-validation-for="GioiTinh" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NgaySinh">Ngày sinh</label>
+            <input style="height: 43px" asp-for="NgaySinh" type="date" class="form-control" />
+            <span asp-validation-for="NgaySinh" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input style="height: 43px" asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SDT">Số điện thoại</label>
+            <input style="height: 43px" asp-for="SDT" class="form-control" />
+            <span asp-validation-for="SDT" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DiaChi">Địa chỉ</label>
+            <input style="height: 43px" asp-for="DiaChi" class="form-control" />
+            <span asp-validation-for="DiaChi" class="text-danger"></span>
+        </div>
+        <div class="form-actions d-flex gap-2">
+            <button type="submit" class="btn btn-success">Cập nhật</button>
+            <form asp-action="Delete" method="post" class="d-flex gap-2 mx-3" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản?');">
+                <input type="hidden" asp-for="NguoiDungId" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Xóa tài khoản
+                </button>
+            </form>
+        </div>
+    </form>
+    
+
+   
+</div>

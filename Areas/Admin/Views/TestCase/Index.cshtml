@@ -1,0 +1,112 @@
+﻿@model IEnumerable<DACS2.Models.TestCase>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <h2>📋 Danh sách Test Case</h2>
+    <div class="table-responsive">
+        <table id="testCaseTable" class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Bài học</th>
+                    <th>Mô tả</th>
+                    <th>CSS Selector</th>
+                    <th>Loại kiểm tra</th>
+                    <th>Thuộc tính</th>
+                    <th>Giá trị mong đợi</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tc in Model)
+                {
+                    <tr>
+                        <td>@tc.Id</td>
+                        <td>@tc.BaiHoc?.TenBaiHoc</td>
+                        <td>@tc.Description</td>
+                        <td>@tc.CssSelector</td>
+                        <td>@tc.TestType</td>
+                        <td>@tc.Property</td>
+                        <td>@tc.ExpectedValue</td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="TestCase" asp-action="Update" asp-route-id="@tc.Id" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                            <a asp-area="Admin" asp-controller="TestCase" asp-action="Delete" asp-route-id="@tc.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#testCaseTable').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+            },
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100]
+        });
+    });
+</script>
+
+
+<style>
+    .container-fluid {
+        margin: 0;
+    }
+
+    .product-list {
+        width: 100%;
+        margin-left: 15px;
+    }
+
+    .khoa-hoc-section thead {
+        border: 1px #2c2f34;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .dark-mode .khoa-hoc-section thead {
+        border: 1px white;
+    }
+
+    .dark-mode .khoa-hoc-section td {
+        color: #fff;
+    }
+
+    #baiHocTable_filter_custom {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #baiHocTable_filter input {
+        margin-left: 10px;
+        border-radius: 4px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+    }
+
+    .dataTables_length {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+        .dataTables_length label {
+            padding-top: 5px; 
+        }
+</style>
